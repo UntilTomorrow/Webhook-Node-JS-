@@ -38,14 +38,19 @@ app.post('/', (req, res) => {
       const email = req.body.email;
       const address = req.body.address;
       const description = req.body.description;
+      const tagsArray = req.body.tags.split(',').map(tag => tag.trim()); // Memisahkan tag dan menghilangkan spasi
+
       //%23 pengganti hastag
-      const tags = req.body.tags.split(',').map(tag => `%23${tag}`).join(',');
+      //const tags = req.body.tags.split(',').map(tag => `%23${tag},`).join(',');
+      const tags = tagsArray.map(tag => `%23${tag}`).join(',');
+      //dept tag
+      //const combinedTags = tags + `,%23${department}`;
       //
       const axios = require('axios');
       
       // query string 
       const queryString = `source=${source}&status=${status}&department=${department}&company=${company}&name=${name}&email=${email}&address=${address}&description=${description}&tags=${tags}`;
-      axios.get(`http://server/contactus2?${queryString}`)
+      axios.get(`http://192.168.100.105/perfex_crm/authentication/contactus2?${queryString}`)
         .then((response) => {
           console.log('data', queryString)
           console.log('Respon dari Web 2:', response.data);
